@@ -1,0 +1,6 @@
+@AwsEcsCSharpApi_HostAddress = http://localhost:5265
+
+GET {{AwsEcsCSharpApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
