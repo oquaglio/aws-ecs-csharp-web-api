@@ -1,0 +1,8 @@
+bin/
+obj/
+*.user
+*.nupkg
+.vscode/
+.idea/
+*.log
+.env
