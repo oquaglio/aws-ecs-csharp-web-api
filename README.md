@@ -65,19 +65,29 @@ aws ecr create-repository --repository-name aws-ecs-csharp-api --region $AWS_REG
 ### Tag and Push
 
 ```SH
+#tag with latest
 docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:latest
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:latest
+
+# tag with git tag
+VERSION=$(git describe --tags --abbrev=0)
+docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$VERSION
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$VERSION
+
+# tag with stable
+docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:stable
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:stable
+
+# tag with git hash
+COMMIT_HASH=$(git rev-parse --short HEAD)
+docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$COMMIT_HASH
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$COMMIT_HASH
 ```
 
-### Create VPC
-
-#### Create Subnets, Internet Gateway
-
-
-### Create ECS Cluster
-
-aws ecs create-cluster --cluster-name fargate-cluster --region us-east-1
-
+List images:
+```sh
+aws ecr list-images --repository-name aws-ecs-csharp-api --region $AWS_REGION
+```
 
 ### Deploy Image to ECS
 
