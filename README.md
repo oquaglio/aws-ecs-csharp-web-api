@@ -89,7 +89,7 @@ docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazona
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$BRANCH_NAME
 ```
 
-List images:
+List images (and their tags):
 ```sh
 aws ecr list-images --repository-name aws-ecs-csharp-api --region $AWS_REGION
 ```
