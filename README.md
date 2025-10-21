@@ -82,6 +82,11 @@ docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api
 COMMIT_HASH=$(git rev-parse --short HEAD)
 docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$COMMIT_HASH
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$COMMIT_HASH
+
+# tag with current branch
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD | sed 's/\//-/g')
+docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$BRANCH_NAME
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:$BRANCH_NAME
 ```
 
 List images:
