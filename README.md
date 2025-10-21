@@ -1,6 +1,6 @@
-# C# App
+# C# Web API for ECS
 
-
+A basic demo project for a .NET C# Web API to showcase deployment to AWS Elastic Container Service (ECS) with load balancing.
 
 ## Testing
 
@@ -17,6 +17,10 @@ Build image:
 
 ```SH
 docker build --no-cache -t aws-ecs-csharp-api . 2>&1 | tee docker-build.log
+```
+Check the tags on the image:
+```sh
+docker image inspect -f '{{json .RepoTags}}' 2a9adc9c21b8 | jq
 ```
 
 Run container:
@@ -44,8 +48,46 @@ Remove container:
 docker stop test-app; docker rm test-app
 ```
 
-## Deploy
+## Deploy to ECS
+
+### Authenticate Docker to ECR
+
+```SH
+aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+```
+
+### Create an ECR Repository
+
+```SH
+aws ecr create-repository --repository-name aws-ecs-csharp-api --region $AWS_REGION
+```
+
+### Tag and Push
+
+```SH
+docker tag aws-ecs-csharp-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-ecs-csharp-api:latest
+```
+
+### Create VPC
+
+#### Create Subnets, Internet Gateway
+
+
+### Create ECS Cluster
+
+aws ecs create-cluster --cluster-name fargate-cluster --region us-east-1
+
 
 ### Deploy Image to ECS
 
+```sh
+terraform apply
+```
+
+### Monitor Logs
+
+```SH
+aws logs tail /ecs/aws-ecs-csharp-api --region ap-southeast-2 --follow
+```
 
